@@ -11,6 +11,13 @@ FILE=${FILE:-/tmp/out.json}
 
 INDEX=${1:-'. | length - 1'}
 
-jq "del(.[$INDEX])" "$FILE" >"$FILE.tmp" &&
-	mv "$FILE.tmp" "$FILE" &&
-	jq . "$FILE"
+case "$INDEX" in
+a | A)
+	echo '[]' >"$FILE"
+	;;
+*)
+	jq "del(.[$INDEX])" "$FILE" >"$FILE.tmp" &&
+		mv "$FILE.tmp" "$FILE" &&
+		jq . "$FILE"
+	;;
+esac
