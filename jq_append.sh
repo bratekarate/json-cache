@@ -9,7 +9,9 @@ OUT=$(echo "${2:-$(cat -)}" | jq --compact-output)
 
 INDEX=$(jq '. | length' "$FILE")
 
-add_json_with_ids --argjson j "$OUT" \
+echo '[]' | \
+  add_json_with_ids --argjson j "$(cat /tmp/out.json)" --arg i 0 &&
+  add_json_with_ids --argjson j "$OUT" \
   --arg i "$INDEX" "$FILE" >"$FILE.tmp" &&
 	mv "$FILE.tmp" "$FILE" &&
 	jq . "$FILE"

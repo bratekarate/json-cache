@@ -1,7 +1,8 @@
 #!/usr/bin/jq -f
 
 def add_id(pr):
-    [ foreach .[] as $o ($i|tonumber;
+    [ foreach .[] as $o (
+            $i|tonumber - 1;
             . + 1;
             $o + {"n": . }) ];
 

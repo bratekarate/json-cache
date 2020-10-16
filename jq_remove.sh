@@ -16,8 +16,10 @@ a | A)
 	echo '[]' >"$FILE"
 	;;
 *)
-	jq "del(.[$INDEX])" "$FILE" >"$FILE.tmp" &&
-		mv "$FILE.tmp" "$FILE" &&
-		jq . "$FILE"
+echo '[]' | \
+  add_json_with_ids --argjson j "$(jq "del(.[$INDEX])" "$FILE")" \
+  --arg i 0 >"$FILE.tmp" &&
+  mv "$FILE.tmp" "$FILE"
 	;;
-esac
+esac || exit
+jq . "$FILE"
