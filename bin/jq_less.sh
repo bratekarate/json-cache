@@ -1,3 +1,3 @@
 #!/bin/sh
 
-jq --color-output | less
+jq --color-output | less -r
