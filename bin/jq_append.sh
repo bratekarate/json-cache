@@ -1,11 +1,23 @@
 #!/bin/sh
 
-FILE=${1:-$FILE}
-FILE=${FILE:-/tmp/out.json}
+while getopts ':abcdef:ghijklmnopqrstuvwxyz' O; do
+  case "$O" in
+  f)
+    FILE="$OPTARG"
+    ;;
+  *)
+    echo "Error: unknown parameter -$O" >&2
+    exit 1
+    ;;
+  esac
+done
+shift $((OPTIND - 1))
+
+FILE=${FILE:-/tmp/jq_out.json}
 
 [ -f "$FILE" ] || echo '[]' >"$FILE"
 
-OUT=$(echo "${2:-$(cat -)}" | jq --compact-output)
+OUT=$(echo "${1:-$(cat -)}" | jq --compact-output)
 
 INDEX=$(jq '. | length' "$FILE")
 
